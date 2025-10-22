@@ -3,13 +3,12 @@
 import sys
 from stats import word_count
 from stats import char_count
-from stats import sorted_char_count
-
+from stats import sort_counts
+from stats import word_occurrence
 
 def get_book_text(filepath):
 	with open(filepath) as f:
 		return f.read()
-
 
 def main():
 
@@ -25,11 +24,16 @@ def main():
 	print("----------- Word Count ----------")
 	print(f"Found {word_count_result} total words")
 
-	print("----------- Character Count ----------")
-	sorted_char_list = sorted_char_count(char_count_result)
+	print("----------- Character Breakout ----------")
+	sorted_char_list = sort_counts(char_count_result, "char")
 	for char_ct in sorted_char_list:
 		print(f"{char_ct["char"]}: {char_ct["num"]}")
 
+	print("----------- Word Breakout ----------")
+	word_tally = word_occurrence(book_content)
+	sorted_word_list = sort_counts(word_tally, "word")
+	for word_ct in sorted_word_list:
+		print(f"{word_ct["word"]}: {word_ct["num"]}")
 
 if len(sys.argv) != 2:
 	print("Usage: python3 main.py <path_to_book>")

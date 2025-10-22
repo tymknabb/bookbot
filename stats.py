@@ -19,21 +19,43 @@ def char_count(book):
   return results
 
 
+def word_occurrence(book):
+  book_ascii = filter_text(book)
+  words = book_ascii.split()
+  results = {}
+  for word in words:
+    if word not in results:
+      results[word] = 0
+    results[word] += 1
+
+  return results
+
+
+# Control codes, hyphens, and lower-case letters ONLY
+def filter_text(text):
+  text_no_emdashes = text.lower().replace("—"," ")
+  return ''.join(i for i in text_no_emdashes if ord(i) < 33 or ord(i) == 45 or 96 < ord(i) < 123)
+
+
+# Intended for use as the key function used in sort()
 def sort_on(items):
   return items["num"]
 
 
-def sorted_char_count(char_cts):
-  char_ct_list = []
-  for char_ct in char_cts:
-    pretty_char_ct = {}
-    pretty_char_ct["char"] = char_ct
-    pretty_char_ct["num"]  = char_cts[char_ct]
+# Second argument takes the name of the first key
+def sort_counts(counts, key):
+  ct_list = []
+  for ct in counts:
+    pretty_ct = {}
+    pretty_ct[key] = ct
+    pretty_ct["num"]  = counts[ct]
 
-    if char_ct.isalpha():
-      char_ct_list.append(pretty_char_ct)
+    if isinstance(ct, str):
+      if len(ct) == 1 and not ct.isalpha():
+        continue
+      ct_list.append(pretty_ct)
 
-  char_ct_list.sort(reverse=True, key=sort_on)
+  ct_list.sort(reverse=True, key=sort_on)
 
-  return char_ct_list
+  return ct_list
 
